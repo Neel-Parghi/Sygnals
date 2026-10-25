@@ -1,7 +1,7 @@
-# Connecto
-Monorepo for Connecto – Angular web app and .NET Core API
+# Sygnals
+Monorepo for Sygnals – Angular web app and .NET Core API
 
-Connecto is a real-time one-to-one chat application that randomly connects users for instant conversations, built using a modern monorepo architecture. 
+Sygnals is a real-time one-to-one chat application that randomly connects users for instant conversations, built using a modern monorepo architecture. 
 It uses Angular for the web UI and ASP.NET Core with SignalR for real-time messaging.
 
 ---
