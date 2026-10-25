@@ -1,22 +1,140 @@
-<div class="page-container">
-    <!-- Left slogan panel -->
-    <div class="left-panel">
-        <h1>
-            Connect <br />
-            With <br />
-            Random <br />
-            Strangers
-        </h1>
+<div class="landing">
+
+    <!-- Hero: full-width band with the photo background -->
+    <div class="hero-band photo-host photo-fade">
+    <section class="hero container">
+        <div class="hero-copy">
+            @if (onlineCount.count(); as count) {
+                <span class="online-pill"><span class="live-dot"></span><span class="mono">{{ count }}</span>&nbsp;online now</span>
+            }
+
+            <h1>Meet someone new.</h1>
+            <p class="lead">
+                Sygnals pairs you with a random person who's online right now for a one-to-one chat.
+                No account, no profile, just a nickname.
+            </p>
+
+            <form [formGroup]="form" (ngSubmit)="startChat()" novalidate>
+                <label for="username" class="field-label">Nickname</label>
+                <div class="form-row">
+                    <input id="username" type="text" formControlName="username" placeholder="e.g. NightOwl"
+                        maxlength="15" autocomplete="nickname" />
+                    <button type="submit" class="cta">Start chatting</button>
+                </div>
+                @if (form.get('username')?.invalid && form.get('username')?.touched) {
+                    <span class="error-text">Enter a nickname to continue.</span>
+                }
+            </form>
+
+            <ul class="trust">
+                <li><i class="fa-solid fa-check"></i>No sign-up</li>
+                <li><i class="fa-solid fa-check"></i>Messages aren't saved</li>
+                <li><i class="fa-solid fa-check"></i>Skip anytime</li>
+            </ul>
+        </div>
+
+        <!-- Product preview (decorative) -->
+        <div class="shot" aria-hidden="true">
+            <div class="shot-back">
+                <div class="back-head">
+                    <span class="avatar">A</span>
+                    <span><b>Alex</b><small>Up next</small></span>
+                </div>
+                <div class="back-lines"><i></i><i></i></div>
+            </div>
+
+            <div class="shot-card">
+                <div class="shot-header">
+                    <div class="who">
+                        <span class="who-avatar">M<span class="presence"></span></span>
+                        <span><b>Mira</b><small>Online · typing…</small></span>
+                    </div>
+                    <div class="shot-actions">
+                        <span class="icon-btn"><i class="fa-solid fa-phone"></i></span>
+                        <span class="icon-btn"><i class="fa-solid fa-forward"></i></span>
+                    </div>
+                </div>
+
+                <div class="shot-body">
+                    <div class="day">Today</div>
+                    <div class="row pop" style="--d: .1s">
+                        <span class="avatar">M</span>
+                        <div class="bubble">hey! where are you chatting from?<time>9:41 PM</time></div>
+                    </div>
+                    <div class="row me pop" style="--d: .3s">
+                        <div class="bubble">Pune, just finished work. you?<time>9:41 PM</time></div>
+                    </div>
+                    <div class="row pop" style="--d: .5s">
+                        <span class="avatar">M</span>
+                        <div class="bubble voice">
+                            <span class="play"><i class="fa-solid fa-play"></i></span>
+                            <span class="wave">
+                                @for (h of wave; track $index) {
+                                    <i [style.height.%]="h"></i>
+                                }
+                            </span>
+                            <span class="dur mono">0:07</span>
+                        </div>
+                    </div>
+                    <div class="row me pop" style="--d: .7s">
+                        <div class="bubble">haha the rain sounds 😄<time>9:42 PM</time></div>
+                    </div>
+                    <div class="row pop" style="--d: .9s">
+                        <span class="avatar">M</span>
+                        <div class="typing"><span></span><span></span><span></span></div>
+                    </div>
+                </div>
+
+                <div class="shot-footer">
+                    <span class="fake-input">Type a message...</span>
+                    <span class="tool"><i class="fa-solid fa-microphone"></i></span>
+                    <span class="tool send"><i class="fa-solid fa-paper-plane"></i></span>
+                </div>
+            </div>
+
+            <div class="chip chip-top">
+                <span class="chip-icon ok"><i class="fa-solid fa-check"></i></span>
+                <span><b>Connected</b><small>You and Mira are chatting</small></span>
+            </div>
+            <div class="chip chip-bottom">
+                <span class="chip-icon ring"><i class="fa-solid fa-phone"></i></span>
+                <span><b>Mira is calling</b><small>Voice call</small></span>
+                <span class="call-btns">
+                    <span class="call-btn no"><i class="fa-solid fa-xmark"></i></span>
+                    <span class="call-btn yes"><i class="fa-solid fa-phone"></i></span>
+                </span>
+            </div>
+        </div>
+    </section>
     </div>
 
-    <!-- Right form panel -->
-    <div class="right-panel">
-        <div class="form-container">
-            <h3>Username</h3>
-            <form [formGroup]="form" (ngSubmit)="startChat()">
-                <input type="text" formControlName="username" placeholder="Enter your username" aria-label="Username" />
-                <button type="submit" [disabled]="form.invalid">Chat</button>
-            </form>
-        </div>
+    <div class="container">
+    <!-- How it works -->
+    <section class="section">
+        <h2 class="kicker">How it works</h2>
+        <ol class="steps">
+            @for (step of steps; track step.title; let i = $index) {
+                <li>
+                    <span class="step-num mono">{{ i + 1 }}</span>
+                    <b>{{ step.title }}</b>
+                    <span>{{ step.text }}</span>
+                </li>
+            }
+        </ol>
+    </section>
+
+    <!-- Features -->
+    <section class="section">
+        <h2 class="kicker">In every chat</h2>
+        <ul class="features">
+            @for (f of features; track f.title) {
+                <li>
+                    <span class="feature-icon"><i [class]="f.icon"></i></span>
+                    <b>{{ f.title }}</b>
+                    <span>{{ f.text }}</span>
+                </li>
+            }
+        </ul>
+    </section>
     </div>
 </div>
