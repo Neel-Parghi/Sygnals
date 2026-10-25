@@ -1,4 +1,4 @@
-using Connecto.Api.Services;
+using Sygnals.Api.Services;
 using Microsoft.AspNetCore.Builder;
 
 var builder = WebApplication.CreateBuilder(args);
