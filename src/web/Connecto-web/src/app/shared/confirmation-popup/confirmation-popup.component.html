@@ -1,10 +1,11 @@
-<div class="dialog-backdrop">
-    <div class="dialog-box">
-        <h2>{{ title }}</h2>
-        <p>{{ message }}</p>
+<div class="dialog-backdrop" (click)="onCancel()">
+    <div class="dialog-box" role="alertdialog" aria-modal="true" aria-labelledby="dialog-title"
+        aria-describedby="dialog-message" (click)="$event.stopPropagation()">
+        <h2 id="dialog-title">{{ title }}</h2>
+        <p id="dialog-message">{{ message }}</p>
         <div class="dialog-actions">
-            <button (click)="onConfirm()">Yes</button>
-            <button (click)="onCancel()">No</button>
+            <button type="button" class="btn-secondary" (click)="onCancel()">{{ cancelText }}</button>
+            <button type="button" class="btn-danger" (click)="onConfirm()">{{ confirmText }}</button>
         </div>
     </div>
 </div>

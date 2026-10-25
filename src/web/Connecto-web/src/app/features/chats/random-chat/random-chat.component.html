@@ -1,10 +1,9 @@
 <div class="page-container">
-    <!-- Left panel with background -->
-    <div class="left-panel glass-panel">
+    <!-- Left panel -->
+    <div class="left-panel photo-host photo-even">
         <div class="chat-info">
             <div class="brand">
-                <h1>Random Chat</h1>
-                <div class="brand-line"></div>
+                <h1>Random chat</h1>
             </div>
             <p class="subtitle">Connect with strangers around the globe.</p>
 
@@ -54,15 +53,13 @@
                     </div>
                 }
 
-                <div class="actions-grid">
-
-                    <button>
-                        <div class="status-card action-tile">
-                            <span>Online Users: {{activeUserCount}}</span>
-                        </div>
-                    </button>
-                </div>
-            </div>
+                <div class="status-card online-card">
+                    <span class="online-dot"></span>
+                    <div class="status-text">
+                        <span class="label">Online now</span>
+                        <span class="value"><span class="mono">{{ activeUserCount }}</span> {{ activeUserCount === 1 ? 'person' : 'people' }}</span>
+                    </div>
+                </div>            </div>
         </div>
     </div>
 
@@ -113,6 +110,21 @@
 
             <!-- Chat Messages -->
             <div class="chat-body" #chatBody>
+
+                <!-- Searching empty state (the sidebar status is hidden on mobile, so show it here too) -->
+                @if (currentState !== 'chatting' && currentState !== 'ended' && messages.length === 0) {
+                    <div class="empty-state">
+                        <div class="radar-spinner large">
+                            <div class="radar-wave"></div>
+                            <i class="fa-solid fa-satellite-dish"></i>
+                        </div>
+                        <b>Finding someone to talk to</b>
+                        <span>{{ (chatService.waiting$ | async) ?? 'This usually takes a few seconds.' }}</span>
+                        @if (activeUserCount > 0) {
+                            <span class="empty-online"><span class="online-dot"></span><span class="mono">{{ activeUserCount }}</span>&nbsp;online now</span>
+                        }
+                    </div>
+                }
 
                 <!-- Incoming Call Banner -->
                 @if ((callService.callState$ | async) === 'incoming') {
@@ -266,8 +278,8 @@
     </div>
 
     @if (showConfirm) {
-        <app-confirmation-popup [title]="'Leave Chat?'" [message]="'Do you really want to leave this conversation?'"
-            (confirmed)="handleConfirm($event)">
+        <app-confirmation-popup [title]="'Leave chat?'" [message]="'You’ll be disconnected from your current conversation.'"
+            [confirmText]="'Leave'" [cancelText]="'Stay'" (confirmed)="handleConfirm($event)">
         </app-confirmation-popup>
     }
 </div>
