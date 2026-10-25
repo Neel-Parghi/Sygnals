@@ -1,49 +1,174 @@
 @import "ngx-toastr/toastr";
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Righteous&display=swap");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Custom font */
-.font-connecto {
-  font-family: "Roboto", "Inter", sans-serif;
+/* ===== Sygnals design tokens =====
+   Five themes, switched by data-theme on <html> (see ThemeService):
+   midnight (default) · graphite · ink · paper-dusk (light) · sage
+   Shared values live on :root; each theme only overrides its palette.
+*/
+:root {
+  color-scheme: dark;
+
+  /* Shared dark-theme values */
+  --color-backdrop: rgba(0, 0, 0, 0.7);
+  --color-selection: rgba(255, 255, 255, 0.2);
+  --color-success: #3ecf8e;
+  --color-warning: #f5a524;
+  --color-danger: #e5484d;
+  --color-danger-hover: #d93d42;
+  --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.5);
+  --shadow-float: 0 24px 48px -20px rgba(0, 0, 0, 0.6), 0 4px 12px -4px rgba(0, 0, 0, 0.3);
+
+  /* Background photo treatment (dark: let the night sky through) */
+  --photo-filter: saturate(1.05);
+  --photo-veil-strong: 88%;
+  --photo-veil-weak: 30%;
+  --photo-veil-side: 62%;
 }
 
-/* Smooth scrollbars */
-::-webkit-scrollbar {
-  width: 6px;
+/* Midnight: neutral near-black, off-white accent */
+:root,
+:root[data-theme="midnight"] {
+  --color-bg: #0a0a0a;
+  --color-surface-1: #111111;
+  --color-surface-2: #171717;
+  --color-surface-3: #1f1f1f;
+  --color-border: #222222;
+  --color-border-strong: #2e2e2e;
+  --color-focus: #555555;
+  --color-nav-bg: rgba(10, 10, 10, 0.8);
+
+  --color-text: #ededed;
+  --color-muted: #8f8f8f;
+  --color-subtle: #5e5e5e;
+
+  /* Accent: used only for primary actions and own messages */
+  --color-accent: #ededed;
+  --color-accent-hover: #ffffff;
+  --color-on-accent: #0a0a0a;
 }
 
-::-webkit-scrollbar-track {
-  background: #1e1b29;
+/* Warm graphite: brown-tinted charcoal, amber accent */
+:root[data-theme="graphite"] {
+  --color-bg: #141210;
+  --color-surface-1: #1a1815;
+  --color-surface-2: #201d19;
+  --color-surface-3: #2a2621;
+  --color-border: #2a2622;
+  --color-border-strong: #38332d;
+  --color-focus: #5c544a;
+  --color-nav-bg: rgba(20, 18, 16, 0.8);
+
+  --color-text: #ede8e1;
+  --color-muted: #a39a8e;
+  --color-subtle: #6e665c;
+
+  --color-accent: #e8a15a;
+  --color-accent-hover: #f0b277;
+  --color-on-accent: #1a1209;
 }
 
-::-webkit-scrollbar-thumb {
-  background: #676767;
-  border-radius: 8px;
+/* Deep ink: navy-black, periwinkle accent */
+:root[data-theme="ink"] {
+  --color-bg: #0b1020;
+  --color-surface-1: #10172a;
+  --color-surface-2: #151d34;
+  --color-surface-3: #1c2541;
+  --color-border: #1e2742;
+  --color-border-strong: #2a3457;
+  --color-focus: #4a5784;
+  --color-nav-bg: rgba(11, 16, 32, 0.8);
+
+  --color-text: #e6eaf5;
+  --color-muted: #8f9abb;
+  --color-subtle: #5b6688;
+
+  --color-accent: #8ea2ff;
+  --color-accent-hover: #a7b6ff;
+  --color-on-accent: #0b1020;
+}
+
+/* Sage: green-black, mint accent */
+:root[data-theme="sage"] {
+  --color-bg: #0c1311;
+  --color-surface-1: #111a17;
+  --color-surface-2: #16211d;
+  --color-surface-3: #1d2a25;
+  --color-border: #1f2b27;
+  --color-border-strong: #2b3a34;
+  --color-focus: #4a5e56;
+  --color-nav-bg: rgba(12, 19, 17, 0.8);
+
+  --color-text: #e4ece8;
+  --color-muted: #8ea39a;
+  --color-subtle: #5a6d65;
+
+  --color-accent: #9fe0c0;
+  --color-accent-hover: #b8ead1;
+  --color-on-accent: #0c1311;
+}
+
+/* Paper dusk: the light theme, a warm mid-grey with near-black text */
+:root[data-theme="paper-dusk"] {
+  color-scheme: light;
+
+  --color-bg: #cfccc5;
+  --color-surface-1: #dbd8d2;
+  --color-surface-2: #dddad4;
+  --color-surface-3: #c0bcb4;
+  --color-border: #bfbab1;
+  --color-border-strong: #aea99f;
+  --color-focus: #6f6a62;
+  --color-nav-bg: rgba(207, 204, 197, 0.85);
+  --color-backdrop: rgba(30, 28, 25, 0.35);
+  --color-selection: rgba(0, 0, 0, 0.12);
+
+  --color-text: #1a1917;
+  --color-muted: #4f4b45;
+  --color-subtle: #6f6a62;
+
+  --color-accent: #1a1917;
+  --color-accent-hover: #000000;
+  --color-on-accent: #dbd8d2;
+
+  --color-success: #1a8a56;
+  --color-warning: #a86a08;
+  --color-danger: #c9353b;
+  --color-danger-hover: #b02e33;
+
+  --shadow-lg: 0 16px 40px rgba(40, 35, 25, 0.2);
+  --shadow-float: 0 24px 48px -20px rgba(40, 35, 25, 0.38), 0 4px 12px -4px rgba(40, 35, 25, 0.14);
+
+  /* Light: fade the photo to a soft texture */
+  --photo-filter: grayscale(0.6) brightness(1.3) contrast(0.8);
+  --photo-veil-strong: 90%;
+  --photo-veil-weak: 62%;
+  --photo-veil-side: 74%;
 }
 
 :root {
-  --color-primary: #6c5dd3;
-  /* --color-secondary: #1E1A2B; */
-  --color-secondary: rgb(12 42 75);
+  /* Type */
+  --font-sans: "Geist", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, "SFMono-Regular", Consolas, monospace;
+  --tracking-tight: -0.02em;
+  --tracking-display: -0.04em;
 
-  /* Layout Spacing */
-  --space-xs: 4px;
-  --space-sm: 8px;
-  --space-md: 16px;
-  --space-lg: 24px;
-  --space-xl: 32px;
+  /* Type scale */
+  --text-xs: 11px;
+  --text-sm: 13px;
+  --text-base: 14px;
+  --text-md: 15px;
+  --text-lg: 18px;
+  --text-display: 48px;
 
-  /* Border Radius */
+  /* Radius */
   --radius-sm: 6px;
-  --radius-md: 12px;
-  --radius-lg: 20px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
 
-  /* Shadow */
-  --shadow-md: 0px 4px 12px rgba(0, 0, 0, 0.1);
-  --navbar-height: 60px;
+  --navbar-height: 56px;
 }
 
 * {
@@ -56,89 +181,72 @@ html,
 body {
   height: 100%;
   margin: 0;
-  font-family: "Inter", sans-serif;
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
   background-color: var(--color-bg);
   color: var(--color-text);
   line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Smooth palette swap when the theme toggles */
+body,
+body * {
+  transition-property: background-color, border-color, color;
+  transition-duration: 0.2s;
+  transition-timing-function: ease;
+}
+
+h1,
+h2,
+h3 {
+  text-wrap: balance;
 }
 
 a {
-  color: var(--color-primary);
+  color: var(--color-text);
   text-decoration: none;
 }
 
-a:hover {
-  text-decoration: underline;
+::selection {
+  background: var(--color-selection);
 }
 
-.text-muted {
-  color: var(--color-muted);
+:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
 }
 
-.shadow-md {
-  box-shadow: var(--shadow-md);
+.mono {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0;
 }
 
-.rounded-md {
-  border-radius: var(--radius-md);
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
 
-.flex {
-  display: flex;
-}
-
-.flex-center {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
+/* Scrollbars */
 ::-webkit-scrollbar {
   width: 8px;
 }
 
-::-webkit-scrollbar-thumb {
-  background: var(--color-primary);
-  border-radius: var(--radius-md);
-}
-
 ::-webkit-scrollbar-track {
-  background: var(--color-secondary);
+  background: transparent;
 }
 
-.sidebar-space {
-  margin-left: 10px;
-  margin-right: 10px;
-}
-
-.button-black {
-  background-color: black;
-}
-
-.toast-top-right {
-  top: 70px;
-  right: 20px;
-}
-
-.toast-warning {
-  background-color: #d26607;
-  color: #000000;
-  font-weight: 400;
-  box-shadow: none !important;
-}
-
-.toast-success {
-  background-color: #28aa1c;
-  color: #040404;
-  font-weight: 400;
-  box-shadow: none !important;
-}
-
-.toast-info {
-  background-color: #2462aa;
-  color: #fff;
-  font-weight: 400;
-  box-shadow: none !important;
+::-webkit-scrollbar-thumb {
+  background: var(--color-surface-3);
+  border-radius: 8px;
 }
 
 body::-webkit-scrollbar {
@@ -146,88 +254,104 @@ body::-webkit-scrollbar {
   height: 0;
 }
 
-.navbar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: var(--navbar-height);
-  z-index: 1000;
-  backdrop-filter: blur(10px);
-  background: rgba(5, 76, 123, 0.445);
-  font-family: "Righteous", cursive;
-  transition: all 0.3s ease;
+/* ===== Toasts ===== */
+.toast-container .ngx-toastr {
+  width: 320px;
+  padding: 12px 14px;
+  background-color: var(--color-surface-2);
+  background-image: none;
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg) !important;
+  color: var(--color-text);
+  font-size: 13px;
 }
 
-.navbar-content {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  height: 100%;
-  padding: 0 24px;
-  background: #030507f3;
-  backdrop-filter: blur(10px);
+.toast-container .ngx-toastr:hover {
+  box-shadow: var(--shadow-lg) !important;
 }
 
-.logo {
-  font-size: 18px;
-  color: #8c9c9b;
-  cursor: pointer;
-  text-decoration: none;
-  transition: color 0.3s ease;
+.toast-title {
+  font-weight: 500;
 }
 
-.logo:hover {
-  color: #fff;
+.toast-message {
+  color: var(--color-muted);
 }
 
-/* Dark theme for guest screen */
-.navbar.dark-theme .logo,
-.navbar.dark-theme .nav-link {
-  color: #8c9c9b;
+.toast-close-button,
+.toast-close-button:hover,
+.toast-close-button:focus {
+  color: var(--color-muted);
+  text-shadow: none;
+  opacity: 1;
 }
 
-.navbar.dark-theme .nav-link:hover {
-  color: #e2e2e2;
-  background: rgba(255, 255, 255, 0.1);
+.toast-top-right {
+  top: calc(var(--navbar-height) + 12px);
+  right: 16px;
 }
 
-.main-content::-webkit-scrollbar {
-  width: 0;
-  height: 0;
-}
-
-/* Footer */
-.public-footer {
-  text-align: center;
-  padding: 1rem;
-  background: #20232a;
-  color: #fff;
-  font-size: 0.9rem;
-}
-
-.public-footer p {
-  margin: 0;
-}
-
-/* Responsive Navbar */
-@media (max-width: 768px) {
-  .navbar-content {
-    padding: 0 16px;
+/* Phones: full-width toasts that sit below the chat header instead of covering it */
+@media (max-width: 600px) {
+  .toast-top-right {
+    top: calc(var(--navbar-height) + 68px);
+    left: 12px;
+    right: 12px;
   }
 
-  .logo {
-    font-size: 16px;
+  .toast-container .ngx-toastr {
+    width: 100%;
   }
 }
 
-@media (max-width: 480px) {
-  .navbar-content {
-    padding: 0 12px;
-  }
+/* ===== Photo background =====
+   Used behind the landing hero and the chat sidebar only, never behind messages.
+   The photo is mirrored so the moon sits on the right; a theme-tinted veil keeps text readable. */
+.photo-host {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  /* optional bottom fade, enabled with .photo-fade */
+  --photo-fade: linear-gradient(transparent, transparent);
+}
 
-  .nav-link {
-    font-size: 12px;
-    padding: 4px 8px;
+/* Fade the photo into the page background at the bottom so the band has no hard edge */
+.photo-host.photo-fade {
+  --photo-fade: linear-gradient(180deg, transparent 50%, var(--color-bg) 100%);
+}
+
+.photo-host::before {
+  content: "";
+  position: absolute;
+  inset: -8px;
+  z-index: -2;
+  background: url("/bg-night.webp") 50% 40% / cover no-repeat;
+  transform: scaleX(-1);
+  filter: var(--photo-filter) blur(1.5px);
+}
+
+.photo-host::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--photo-fade), linear-gradient(100deg,
+      color-mix(in srgb, var(--color-bg) var(--photo-veil-strong), transparent) 0%,
+      color-mix(in srgb, var(--color-bg) var(--photo-veil-strong), transparent) 38%,
+      color-mix(in srgb, var(--color-bg) var(--photo-veil-weak), transparent) 100%);
+}
+
+/* Even veil for narrow panels such as the chat sidebar */
+.photo-host.photo-even::after {
+  background: color-mix(in srgb, var(--color-bg) var(--photo-veil-side), transparent);
+}
+
+@media (max-width: 960px) {
+  .photo-host::after {
+    background: var(--photo-fade), linear-gradient(180deg,
+        color-mix(in srgb, var(--color-bg) var(--photo-veil-strong), transparent) 0%,
+        color-mix(in srgb, var(--color-bg) var(--photo-veil-strong), transparent) 45%,
+        color-mix(in srgb, var(--color-bg) var(--photo-veil-weak), transparent) 100%);
   }
 }

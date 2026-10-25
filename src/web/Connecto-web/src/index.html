@@ -1,17 +1,36 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="midnight">
 <head>
   <meta charset="utf-8">
-  <title>Connecto</title>
+  <title>Sygnals</title>
   <base href="/">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" type="image/x-icon" href="chat.png">
-  <link href="https://fonts.googleapis.com/css2?family=Material+Icons+Outlined" rel="stylesheet">
-
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="description" content="Sygnals pairs you with a random stranger for an instant, anonymous one-to-one chat — text, voice notes, images and calls.">
+  <meta name="theme-color" content="#0A0A0A">
+  <link rel="icon" type="image/svg+xml" href="logo.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <!-- Apply the saved (or system) theme before first paint to avoid a flash; ThemeService takes over after boot.
+       Keep the colour map in sync with THEMES in theme.service.ts -->
+  <script>
+    (function () {
+      var colors = { midnight: '#0A0A0A', graphite: '#141210', ink: '#0B1020', 'paper-dusk': '#CFCCC5', sage: '#0C1311' };
+      var legacy = { dark: 'midnight', light: 'paper-dusk' };
+      var theme = 'midnight';
+      try {
+        var saved = localStorage.getItem('sygnals-theme');
+        saved = legacy[saved] || saved;
+        theme = colors[saved]
+          ? saved
+          : (window.matchMedia('(prefers-color-scheme: light)').matches ? 'paper-dusk' : 'midnight');
+      } catch (e) { }
+      document.documentElement.setAttribute('data-theme', theme);
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', colors[theme]);
+    })();
+  </script>
 </head>
-<body class="mat-typography">
+<body>
   <app-root></app-root>
 </body>
 </html>

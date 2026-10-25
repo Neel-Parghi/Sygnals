@@ -1,14 +1,43 @@
-<header class="navbar dark-theme">
+<header class="navbar">
   <div class="navbar-content">
     <!-- Logo -->
-    <div class="logo" (click)="navigateToHome()"> <img src="/chat.png" class="logo-image" alt="Chat Icon"> Connecto
+    <button type="button" class="logo" (click)="navigateToHome()" aria-label="Sygnals home">
+      <img src="/logo.svg" class="logo-image" alt="" />
+      <span class="wordmark">Sygnals</span>
+    </button>
+
+    <div class="nav-actions">
+      <!-- Theme picker -->
+      <div class="theme-picker">
+        <button type="button" class="theme-trigger" (click)="toggleThemeMenu($event)" aria-haspopup="menu"
+          [attr.aria-expanded]="showThemeMenu" aria-label="Change theme" title="Theme">
+          <span class="swatch" [style.--swatch-bg]="currentTheme().bg" [style.--swatch-accent]="currentTheme().accent"></span>
+          <span class="theme-name">{{ currentTheme().label }}</span>
+          <i class="fa-solid fa-chevron-down caret"></i>
+        </button>
+
+        @if (showThemeMenu) {
+          <div class="theme-menu" role="menu" aria-label="Theme">
+            @for (t of themeService.themes; track t.id) {
+              <button type="button" role="menuitemradio" class="theme-option"
+                [attr.aria-checked]="t.id === themeService.theme()" (click)="selectTheme(t.id)">
+                <span class="swatch" [style.--swatch-bg]="t.bg" [style.--swatch-accent]="t.accent"></span>
+                <span>{{ t.label }}</span>
+                @if (t.id === themeService.theme()) {
+                  <i class="fa-solid fa-check check"></i>
+                }
+              </button>
+            }
+          </div>
+        }
+      </div>
     </div>
   </div>
 </header>
 
 @if (showConfirm)
 {
-  <app-confirmation-popup [title]="'Leave Chat?'" [message]="'Do you really want to leave this conversation??'"
-    (confirmed)="handleConfirm($event)">
+  <app-confirmation-popup [title]="'Leave chat?'" [message]="'You’ll be disconnected from your current conversation.'"
+    [confirmText]="'Leave'" [cancelText]="'Stay'" (confirmed)="handleConfirm($event)">
   </app-confirmation-popup>
 }
