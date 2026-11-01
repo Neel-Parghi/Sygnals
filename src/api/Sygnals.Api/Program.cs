@@ -7,12 +7,16 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+// Extra origins can be added on the host without a code change: Cors__AllowedOrigins__0=https://...
+var allowedOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>()
+    ?? ["http://localhost:4200", "https://sygnals-web.vercel.app"];
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll", policy =>
     {
         policy
-            .WithOrigins("http://localhost:4200", "https://sygnals-web.vercel.app")
+            .WithOrigins(allowedOrigins)
             .AllowAnyHeader()
             .AllowAnyMethod()
             .AllowCredentials();
@@ -39,6 +43,7 @@ app.UseRouting();
 app.UseCors("AllowAll");
 
 app.MapHub<ChatHub>("/chatHub");
+app.MapGet("/healthz", () => Results.Ok("ok"));
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

@@ -41,11 +41,11 @@ export class GuestLoginComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    void this.onlineCount.start();
+    this.onlineCount.watch();
   }
 
   ngOnDestroy(): void {
-    void this.onlineCount.stop();
+    void this.onlineCount.unwatch();
   }
 
   startChat() {

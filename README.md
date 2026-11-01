@@ -19,7 +19,7 @@ It uses Angular for the web UI and ASP.NET Core with SignalR for real-time messa
 - **Backend**: ASP.NET Core (.NET 8) with SignalR (Hub-only, no controllers)
 - **Repo Type**: Monorepo
 - **Frontend Hosting**: Vercel
-- **Backend Hosting**: Render
+- **Backend Hosting**: Koyeb (free Hobby plan)
 - **Communication**: WebSockets via SignalR
 
 ---
@@ -35,6 +35,22 @@ It uses Angular for the web UI and ASP.NET Core with SignalR for real-time messa
 - ASP.NET Core (.NET 8)
 - SignalR
 - Docker
-- Deployed on Render
+- Deployed on Koyeb
+
+---
+
+## ☁️ Deploying the backend (Koyeb, free)
+
+The API image is built from `src/api/Sygnals.Api/Dockerfile`. It listens on port **8080** and answers `GET /healthz`.
+
+1. Sign up at koyeb.com with GitHub. The Hobby plan includes one free web service.
+2. Choose **Create Web Service**, then **GitHub**, then pick this repo and the `main` branch.
+3. Set the builder to **Dockerfile**, with work directory `src/api/Sygnals.Api` and Dockerfile location `Dockerfile`.
+4. Set the instance to **Free**, and pick the region closest to your users.
+5. Port: `8080`, HTTP, public path `/`. Health check: HTTP `/healthz` on port 8080.
+6. Optional: add environment variables `Cors__AllowedOrigins__0`, `Cors__AllowedOrigins__1` and so on to replace the allowed frontend origins. The defaults are `http://localhost:4200` and `https://sygnals-web.vercel.app`.
+7. Deploy, then copy the service URL (`https://<name>.koyeb.app`) into `apiBaseUrl` in `src/web/Connecto-web/src/app/environments/environment.dev.ts`. Push that change and Vercel redeploys the frontend.
+
+The free instance sleeps when idle and wakes on the next request. The landing page drops its live "online now" connection when the tab is hidden for 30 seconds or idle for 5 minutes, and reconnects on return. That way, a forgotten tab can't keep the backend awake.
 
 ---
