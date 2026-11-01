@@ -9,7 +9,7 @@ It uses Angular for the web UI and ASP.NET Core with SignalR for real-time messa
 ## 🚀 Live Demo
 
 - **Web App (Vercel)**  
-  https://connecto-web.vercel.app/
+  https://sygnals-web.vercel.app/
 
 ---
 
